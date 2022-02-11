@@ -34,7 +34,20 @@ const setGoals = asyncHandler(async (req, res) => {
 // @route GET /api/goals
 // @access Private
 const updateGoals = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Update Goal ${req.params.id}` });
+  // get goal from database by id
+  const goal = await Goal.findById(req.params.id);
+  // if not found trow error
+  if (!goal) {
+    res.status(200);
+    throw new Error("Goal not found");
+  }
+  // update goal
+  const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+
+  // see updated goal on response
+  res.status(200).json(updatedGoal);
 });
 
 // @desc Delete goal
