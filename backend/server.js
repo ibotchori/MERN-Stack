@@ -4,6 +4,10 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
+// Middleware
+app.use(express.json()); // <-- body parser
+app.use(express.urlencoded({ extended: false })); // <-- url encode
+
 // Goal routes
 app.use("/api/goals", require("./routes/goalRoutes"));
 
