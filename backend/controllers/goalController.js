@@ -1,11 +1,16 @@
 // import express async handler to use it instead of try catch
 const asyncHandler = require("express-async-handler");
+// import goal model
+const Goal = require("../model/goalModel");
 
 // @desc Get all goals
 // @route GET /api/goals
 // @access Private
 const getGoals = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get Goals" });
+  // get all goals from database
+  const goals = await Goal.find();
+  // show goals on response
+  res.status(200).json(goals);
 });
 
 // @desc Set goal
