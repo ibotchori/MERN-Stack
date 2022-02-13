@@ -9,6 +9,7 @@ const GoalSchema = mongoose.Schema(
       required: [true, "Please add a text value"],
     },
   },
+  //timestamps option that tells Mongoose to automatically manage createdAt and updatedAt properties on your documents.
   { timestamps: true }
 );
 

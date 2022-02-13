@@ -1,3 +1,4 @@
+/* Custom error handler */
 // Overwrite default express error handler
 const errorHandler = (err, req, res, next) => {
   // if status code is set, take that. if not, set it to 500
