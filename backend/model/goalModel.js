@@ -4,6 +4,14 @@ const mongoose = require("mongoose");
 // Create schema (describe the way your data looks)
 const GoalSchema = mongoose.Schema(
   {
+    /* Associate user with gaol model */
+    user: {
+      // set type to object id
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      // model name to associate
+      ref: "User",
+    },
     text: {
       type: String,
       required: [true, "Please add a text value"],
