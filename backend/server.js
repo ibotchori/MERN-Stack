@@ -14,8 +14,11 @@ const app = express();
 app.use(express.json()); // <-- body parser
 app.use(express.urlencoded({ extended: false })); // <-- url encode
 
+/*  Routes */
 // Goal routes
 app.use("/api/goals", require("./routes/goalRoutes"));
+// User route
+app.use("/api/users", require("./routes/userRoutes"));
 
 // overwrite the default express error handler with custom error handler middleware
 app.use(errorHandler);
