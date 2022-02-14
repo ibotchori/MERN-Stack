@@ -37,12 +37,13 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password: hashedPassword,
   });
-  // see user information on response
+  // back user information (with token) on response
   if (user) {
     res.status(201).json({
       _id: user.id,
       name: user.name,
       email: user.email,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -61,10 +62,12 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
   // check if user is already in database and password is correct
   if (user && (await bcrypt.compare(password, user.password))) {
+    // back user information (with token) on response
     res.json({
       _id: user.id,
       name: user.name,
       email: user.email,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -78,6 +81,14 @@ const loginUser = asyncHandler(async (req, res) => {
 const getMe = asyncHandler(async (req, res) => {
   res.json({ message: "User data display" });
 });
+
+// Generate JWT
+const generateToken = (id) => {
+  // it takes 3 argument. 1 payload, passed in {id}. 2 secret. 3 expires in
+  return jsonwebtoken.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
 
 module.exports = {
   registerUser,
