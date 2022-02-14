@@ -1,23 +1,46 @@
+// import express async handler to use it instead of try catch
+const asyncHandler = require("express-async-handler");
+// import goal model
+const User = require("../models/userModel");
+// import bcrypt to hash password
+const bcrypt = require("bcryptjs");
+
+const jsonwebtoken = require("jsonwebtoken");
+
 // @desc Register new user
 // @route POST /api/users
 // @access Public
-const registerUser = (req, res) => {
+const registerUser = asyncHandler(async (req, res) => {
+  // Extract name, email and password from request body
+  const { name, email, password } = req.body;
+  // if one of them is not in request body, trow error
+  if (!name || !email || !password) {
+    res.status(400);
+    throw new Error("Please add all fields");
+  }
+  // Check if user exist
+  const userExist = await User.findOne({ email });
+  if (userExist) {
+    res.status(400);
+    throw new Error("User already exist");
+  }
+
   res.json({ message: "Register user" });
-};
+});
 
 // @desc Authenticate a user
 // @route POST /api/users/login
 // @access Public
-const loginUser = (req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
   res.json({ message: "Login user" });
-};
+});
 
 // @desc Get user data
 // @route GET /api/users/me
 // @access Public
-const getMe = (req, res) => {
+const getMe = asyncHandler(async (req, res) => {
   res.json({ message: "User data display" });
-};
+});
 
 module.exports = {
   registerUser,

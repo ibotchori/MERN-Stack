@@ -1,7 +1,7 @@
 // import express async handler to use it instead of try catch
 const asyncHandler = require("express-async-handler");
 // import goal model
-const Goal = require("../model/goalModel");
+const Goal = require("../models/goalModel");
 
 // @desc Get all goals
 // @route GET /api/goals
