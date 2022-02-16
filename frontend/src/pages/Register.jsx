@@ -25,14 +25,6 @@ const Register = () => {
     e.preventDefault();
   };
 
-  // useEffect(() => {
-  //   first;
-
-  //   return () => {
-  //     second;
-  //   };
-  // }, [third]);
-
   return (
     <>
       <section className="heading">
