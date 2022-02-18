@@ -1,10 +1,13 @@
+/* Making HTTP requests */
+
 import axios from "axios";
 
-// "proxy": "http://localhost:5000" in package,json
+// "proxy": "http://localhost:5000" in package,json (not working)
 const API_URL = "http://localhost:5000/api/users/";
 
 // Register user
 const register = async (userData) => {
+  // api call
   const response = await axios.post(API_URL, userData);
 
   // Save response from backend to local storage
@@ -17,6 +20,7 @@ const register = async (userData) => {
 
 // login user
 const login = async (userData) => {
+  // api call
   const response = await axios.post(API_URL + "login", userData);
 
   // Save response from backend to local storage
@@ -29,6 +33,7 @@ const login = async (userData) => {
 
 // Logout user
 const logout = () => {
+  // remove user from local storage
   localStorage.removeItem("user");
 };
 

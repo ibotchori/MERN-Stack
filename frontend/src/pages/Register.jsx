@@ -1,13 +1,15 @@
 import { FaUser } from "react-icons/fa";
-import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { register, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+// React-Toastify allows you to add notifications to your app with ease.
+import { toast } from "react-toastify";
+// Redirect page
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [formData, setFromData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
@@ -26,19 +28,21 @@ const Register = () => {
   );
 
   useEffect(() => {
+    // show notification in error case
     if (isError) {
       toast.error(message);
     }
+    // redirect
     if (isSuccess || user) {
       navigate("/");
     }
-
+    // reset the global state
     dispatch(reset);
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     // Update state by target name
-    setFromData((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
@@ -49,18 +53,22 @@ const Register = () => {
 
     // Check password
     if (password !== password2) {
+      // show notification
       toast.error("Password do not match!");
+      // register the user
     } else {
+      // all data comes from the form
       const userData = {
         name,
         email,
         password,
       };
+      // dispatch register function (from authSlice) and pass the user data
       dispatch(register(userData));
-      console.log(userData);
     }
   };
 
+  // show spinner when loading
   if (isLoading) {
     return <Spinner />;
   }

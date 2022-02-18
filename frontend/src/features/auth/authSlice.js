@@ -1,3 +1,6 @@
+/* Redux tool kit */
+
+// createAsyncThunk for working with async data
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import authService from "./authService";
@@ -15,9 +18,10 @@ const initialState = {
 
 // Register user
 export const register = createAsyncThunk(
-  "auth/register",
+  "auth/register", // <-- action
   async (user, thunkAPI) => {
     try {
+      // api call (from authService file)
       return await authService.register(user);
     } catch (error) {
       const message =
@@ -26,6 +30,7 @@ export const register = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
+      // thunkAPI shows the error message as the payload
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -34,12 +39,14 @@ export const register = createAsyncThunk(
 // Login user
 export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   try {
+    // api call (from authService file)
     return await authService.login(user);
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString();
+    // thunkAPI shows the error message as the payload
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -53,6 +60,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    // Reset action <-- to reset global state
     reset: (state) => {
       state.isLoading = false;
       state.isError = false;
@@ -61,8 +69,9 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Redux Actions
     builder
-      // Redux Actions
+      // change state by actions (when register action is pending)
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })

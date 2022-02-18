@@ -1,11 +1,12 @@
 import { FaSignInAlt } from "react-icons/fa";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { login, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
-
 import { useState, useEffect } from "react";
+// React-Toastify allows you to add notifications to your app with ease.
+import { toast } from "react-toastify";
+// Redirect page
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFromData] = useState({
@@ -25,13 +26,15 @@ const Login = () => {
   );
 
   useEffect(() => {
+    // show notification in error case
     if (isError) {
       toast.error(message);
     }
+    // redirect
     if (isSuccess || user) {
       navigate("/");
     }
-
+    // reset the global state
     dispatch(reset);
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
@@ -45,15 +48,16 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    // login the user, all data comes from the form
     const userData = {
       email,
       password,
     };
-
+    // dispatch login function (from authSlice) and pass the user data
     dispatch(login(userData));
   };
 
+  // show spinner when loading
   if (isLoading) {
     return <Spinner />;
   }
