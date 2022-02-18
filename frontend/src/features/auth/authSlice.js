@@ -56,6 +56,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
 
+// Create auth slice
 export const authSlice = createSlice({
   name: "auth",
   initialState,
