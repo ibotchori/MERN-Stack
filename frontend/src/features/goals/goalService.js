@@ -15,12 +15,11 @@ const createGoal = async (goalData, token) => {
   };
   // api call, pass goal data and config (token)
   const response = await axios.post(API_URL, goalData, config);
-
   return response.data;
 };
 
-const goalsService = {
+const goalService = {
   createGoal,
 };
 
-export default goalsService;
+export default goalService;

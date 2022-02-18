@@ -9,7 +9,7 @@ const GoalForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     // dispatch createGoal function (from goalSlice) and pass the goal (entered text)
-    dispatch(createGoal(text));
+    dispatch(createGoal({ text }));
     setText("");
   };
 

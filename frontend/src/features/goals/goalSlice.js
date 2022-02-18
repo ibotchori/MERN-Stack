@@ -3,7 +3,7 @@
 // createAsyncThunk for working with async data
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import goalsService from "./goalService";
+import goalService from "./goalService";
 
 const initialState = {
   goals: [],
@@ -15,13 +15,13 @@ const initialState = {
 
 // Create new goal
 export const createGoal = createAsyncThunk(
-  "goals/createGoal", // <-- action
+  "goals/create", // <-- action
   async (goalData, thunkAPI) => {
     try {
       // get token from global state
       const token = thunkAPI.getState().auth.user.token;
       // api call (from goalsService file) and pass entered data and token
-      return await goalsService.createGoal(goalData, token);
+      return await goalService.createGoal(goalData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -42,6 +42,25 @@ export const goalSlice = createSlice({
   reducers: {
     // Reset action <-- to reset global state
     reset: (state) => initialState,
+  },
+  extraReducers: (builder) => {
+    // Redux Actions
+    builder
+      // change state by actions (when createGoal action is pending)
+      .addCase(createGoal.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createGoal.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        // push new goal on global state
+        state.goals.push(action.payload);
+      })
+      .addCase(createGoal.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      });
   },
 });
 
