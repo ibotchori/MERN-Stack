@@ -18,10 +18,32 @@ export const createGoal = createAsyncThunk(
   "goals/create", // <-- action
   async (goalData, thunkAPI) => {
     try {
-      // get token from global state
+      // get token logged user from global state
       const token = thunkAPI.getState().auth.user.token;
-      // api call (from goalsService file) and pass entered data and token
+      // api call (from goalService file) and pass entered data and token
       return await goalService.createGoal(goalData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      // thunkAPI shows the error message as the payload
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Get user goals
+export const getGoals = createAsyncThunk(
+  "goals/getAll", // <-- action
+  async (_, thunkAPI) => {
+    try {
+      // get logged user token from global state
+      const token = thunkAPI.getState().auth.user.token;
+      // api call (from goalService file) and pass token
+      return await goalService.getGoals(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -53,10 +75,24 @@ export const goalSlice = createSlice({
       .addCase(createGoal.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // push new goal on global state
+        // push new goal in global state
         state.goals.push(action.payload);
       })
       .addCase(createGoal.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getGoals.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getGoals.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        // push all goals in global state
+        state.goals = action.payload;
+      })
+      .addCase(getGoals.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
