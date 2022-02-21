@@ -15,20 +15,9 @@ const app = express();
 app.use(express.json()); // <-- body parser
 app.use(express.urlencoded({ extended: false })); // <-- url encode
 
-// // Add cors middleware to access localhost:3000
-// const cors = require("cors");
-// const whitelist = ["http://localhost:3000"];
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (!origin || whitelist.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
+// Add cors middleware for access
+const cors = require("cors");
+app.use(cors());
 
 /*  Routes */
 // Goal routes
