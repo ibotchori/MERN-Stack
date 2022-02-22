@@ -3,7 +3,7 @@
 import axios from "axios";
 
 // "proxy": "http://localhost:5000" in package,json (not working)
-const API_URL = "http://localhost:5000/api/goals/";
+const API_URL = "https://mern-app-goals.herokuapp.com/api/goals/";
 
 // Create new goal (add goals on server)
 const createGoal = async (goalData, token) => {

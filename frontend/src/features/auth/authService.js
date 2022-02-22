@@ -3,7 +3,7 @@
 import axios from "axios";
 
 // "proxy": "http://localhost:5000" in package,json (not working)
-const API_URL = "http://localhost:5000/api/users/";
+const API_URL = "https://mern-app-goals.herokuapp.com/api/users/";
 
 // Register user
 const register = async (userData) => {
